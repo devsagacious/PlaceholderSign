@@ -1,0 +1,12 @@
+version: '1.1'
+
+# Distance in blocks to check for signs
+sign-minimum-distance: 10
+# Time in seconds to update by, players will receive updates only if they are within the specified minimum distance
+update-time: 5
+# Priority of listener for changes (LOWEST/LOW/NORMAL/HIGH/HIGHEST/MONITOR)
+priority: 'LOW'
+
+
+# Sign list, do not change
+signs: []
