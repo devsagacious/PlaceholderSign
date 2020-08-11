@@ -1,0 +1,4 @@
+version: '1.0'
+
+# Distance in blocks to check for signs
+sign-minimum-distance: 10
