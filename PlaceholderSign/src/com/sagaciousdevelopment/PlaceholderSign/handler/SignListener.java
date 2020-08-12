@@ -69,7 +69,7 @@ public class SignListener implements Listener{
 	
 	@EventHandler(priority=EventPriority.LOW)
 	public void onMove(PlayerMoveEvent e) {
-		if(e.getFrom().getBlockX()!=e.getTo().getBlockX()) {
+		if(e.getFrom().getBlockX()!=e.getTo().getBlockX()||e.getFrom().getBlockZ()!=e.getTo().getBlockZ()) {
 			Core.getPSManager().isInside(e.getPlayer());
 		}
 	}
