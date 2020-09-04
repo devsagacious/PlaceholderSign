@@ -22,10 +22,10 @@ public class PlaceholderSign {
 	
 	private String id;
 	private String[] linesRaw = new String[] {};
+	private int[] linesScroll = new int[] {0,0,0,0};
 	private Sign s;
 	
 	private List<Player> inside = new ArrayList<Player>();
-	public boolean chunkLoaded = true;
 	public boolean deleted = false;
 
 	
@@ -51,6 +51,7 @@ public class PlaceholderSign {
 	
 	public void save() {
 		File f = new File(Core.getInstance().getDataFolder(), "signs/" + id + ".yml");
+		Location l = s.getLocation();
 		
 		if(!f.exists()) {
 			
@@ -61,9 +62,8 @@ public class PlaceholderSign {
 			}
 			
 			FileConfiguration conf = YamlConfiguration.loadConfiguration(f);
-			Location l = s.getLocation();
-			conf.set("location", l.getWorld().getName() + "," + l.getBlockX() + "," + l.getBlockY() + "," + l.getBlockZ());
 			conf.set("rawLines", new ArrayList<String>(Arrays.asList(linesRaw)));
+			conf.set("location", l.getWorld().getName() + "," + l.getBlockX() + "," + l.getBlockY() + "," + l.getBlockZ());
 			
 			try {
 				conf.save(f);
@@ -75,6 +75,7 @@ public class PlaceholderSign {
 		
 		FileConfiguration conf = YamlConfiguration.loadConfiguration(f);
 		conf.set("rawLines", new ArrayList<String>(Arrays.asList(linesRaw)));
+		conf.set("location", l.getWorld().getName() + "," + l.getBlockX() + "," + l.getBlockY() + "," + l.getBlockZ());
 		
 		try {
 			conf.save(f);
@@ -109,8 +110,9 @@ public class PlaceholderSign {
 	}
 	
 	public void sendUpdate(Player p) {
-		if(chunkLoaded) {
+		if(s.getLocation().getChunk().isLoaded()) {
 			
+			int scrolled = 0;
 			String[] temp = linesRaw;
 			List<String> te = new ArrayList<String>();
 			
@@ -125,6 +127,32 @@ public class PlaceholderSign {
 			}
 			
 			if(Core.getInstance().hasRGB()) {t = HexUtil.replaceHexColors('&', t);}
+			if(t.length()>16) {
+				
+				int current = linesScroll[scrolled]+1;
+				if(current==t.length()-1) {
+					current=0;
+				}
+				linesScroll[scrolled]=current;
+				
+				int end = current+15;
+				if(end>t.length()) {
+					end = t.length();
+				}
+				
+				String f = "";
+				int currentScroll = current;
+				for(int is = 0; is < 16; is++) {
+					if(currentScroll>=end) {
+						return;
+					}
+					f+= t.charAt(currentScroll);
+					
+					currentScroll+=1;
+				}
+				t=f;	
+			}
+			scrolled+=1;
 			te.add(t);
 			}
 			

@@ -11,34 +11,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.world.ChunkLoadEvent;
-import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.sagaciousdevelopment.PlaceholderSign.Core;
-import com.sagaciousdevelopment.PlaceholderSign.sign.PlaceholderSign;
 
 public class SignListener implements Listener{
 
 	public SignListener() {
 		Bukkit.getPluginManager().registerEvents(this, Core.getInstance());
-	}
-	
-	@EventHandler
-	public void chunkUnload(ChunkUnloadEvent e) {
-		for(PlaceholderSign ps : Core.getPSManager().getSigns()) {
-			if(ps.getSign().getLocation().getChunk().equals(e.getChunk())) {
-				ps.chunkLoaded=false;
-			}
-		}
-	}
-	
-	@EventHandler
-	public void chunkLoad(ChunkLoadEvent e) {
-		for(PlaceholderSign ps : Core.getPSManager().getSigns()) {
-			if(ps.getSign().getLocation().getChunk().equals(e.getChunk())) {
-				ps.chunkLoaded=true;
-			}
-		}
 	}
 	
 	@EventHandler
@@ -72,5 +53,15 @@ public class SignListener implements Listener{
 		if(e.getFrom().getBlockX()!=e.getTo().getBlockX()||e.getFrom().getBlockZ()!=e.getTo().getBlockZ()) {
 			Core.getPSManager().isInside(e.getPlayer());
 		}
+	}
+	
+	@EventHandler(priority=EventPriority.LOW)
+	public void onTp(PlayerTeleportEvent e) {
+			Core.getPSManager().isInside(e.getPlayer());
+	}
+	
+	@EventHandler(priority=EventPriority.LOW)
+	public void onRespawn(PlayerRespawnEvent e) {
+			Core.getPSManager().isInside(e.getPlayer());
 	}
 }

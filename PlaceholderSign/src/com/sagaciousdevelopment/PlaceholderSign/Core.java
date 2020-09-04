@@ -19,7 +19,7 @@ public class Core extends JavaPlugin{
 		return sm;
 	}
 
-	private String version = "1.0";
+	private String version = "1.1";
 	public String getVersion() {
 		return version;
 	}
@@ -46,6 +46,11 @@ public class Core extends JavaPlugin{
 		return signMinimumDistance;
 	}
 	
+	private int scrollSign;
+	public int getScrollSign() {
+		return scrollSign;
+	}
+	
 	
 	@Override
 	public void onEnable() {
@@ -63,6 +68,7 @@ public class Core extends JavaPlugin{
 		mvdw = Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI");
 		rgb = Bukkit.getVersion().contains("1.16");if(rgb) {getLogger().info("Hex Colors are supported in 1.16");}
 		signMinimumDistance = getConfig().getInt("sign-minimum-distance");
+		scrollSign = getConfig().getInt("scroll-time");
 		
 		sm = new SignManager();
 		new SignCommand();

@@ -1,4 +1,7 @@
-version: '1.0'
+version: '1.1'
 
 # Distance in blocks to check for signs
 sign-minimum-distance: 10
+
+# Time to scroll 1 letter (20 = 1 second)
+scroll-time: 10
